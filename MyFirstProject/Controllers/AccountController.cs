@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Helpers;
 using System.Web.Mvc;
@@ -11,13 +12,14 @@ namespace MyFirstProject.Controllers
 {
     public class AccountController : Controller
     {
+        [AllowAnonymous]
         // GET: Account
         public ActionResult Login()
         {
             return View();
         }
         [HttpPost]
-        public void Login(string userName, string passWord)
+        public ActionResult Login(string userName, string passWord)
         {
             using (MyFirstProjectDBEntities Db = new MyFirstProjectDBEntities())
             {
@@ -38,20 +40,26 @@ namespace MyFirstProject.Controllers
 
                     // Encrypt the ticket.
                     string encTicket = FormsAuthentication.Encrypt(ticket);
-
+                    Response.BufferOutput = true;
                     // Create the cookie.
                     Response.Cookies.Add(new HttpCookie(FormsAuthentication.FormsCookieName, encTicket));
 
                     // Redirect back to original URL.
-                    Response.Redirect(FormsAuthentication.GetRedirectUrl(userName, false));
+                    return Redirect(FormsAuthentication.GetRedirectUrl(userName, false));
                 }
                 else
                 {
-                    Response.Redirect("~/Account/Login");
-                }
+                    return RedirectToAction("Login");
+                }                
             }
         }
-
+        [AllowAnonymous]
+        public ActionResult Logout()
+        {
+            FormsAuthentication.SignOut();
+            return RedirectToAction("Login");
+        }
+        [AllowAnonymous]
         public ActionResult Register()
         {
             return View();
