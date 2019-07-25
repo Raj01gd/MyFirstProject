@@ -1,4 +1,5 @@
-﻿using MyFirstProject.Models;
+﻿using MyFirstProject.Common;
+using MyFirstProject.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,6 +7,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Helpers;
 using System.Web.Mvc;
+using System.Web.Script.Serialization;
 using System.Web.Security;
 
 namespace MyFirstProject.Controllers
@@ -25,10 +27,18 @@ namespace MyFirstProject.Controllers
             {
                 var securePWD = Crypto.SHA1(passWord);
                 var isAuthenticated = Db.SECURITY_DB.Any(item => item.FULL_NAME == userName && item.SECURE_PWD == securePWD);
+                var userInfo = Db.SECURITY_DB.Where(item => item.FULL_NAME == userName).FirstOrDefault();
 
                 if (isAuthenticated)
                 {
-                    string userData = "ApplicationSpecific data for this user.";
+                    var userModel = new UserModel()
+                    {
+                        UserName = userInfo.FULL_NAME,
+                        Role = userInfo.ROLES
+                    };
+                    JavaScriptSerializer serializer = new JavaScriptSerializer();
+
+                    string userData = serializer.Serialize(userModel);
 
                     FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(1,
                       userName,
@@ -73,7 +83,7 @@ namespace MyFirstProject.Controllers
                 var newUser = Db.SECURITY_DB.Create();
                 newUser.FULL_NAME = user.userName;
                 newUser.SECURE_PWD = password;
-                newUser.ROLES = "Admin";
+                newUser.ROLES = user.Role;
                 Db.SECURITY_DB.Add(newUser);
                 Db.SaveChanges();
                 return RedirectToAction("Login");

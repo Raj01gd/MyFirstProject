@@ -16,6 +16,10 @@ namespace MyFirstProject.Models
 
         [Compare("Password")]
         [Display(Name = "Confirmation Password")]
+        [DataType(DataType.Password)]
         public string ConfirmPassword { get; set; }
+
+        [Required(ErrorMessage ="Enter Role")]
+        public string Role { get; set; }
     }
 }

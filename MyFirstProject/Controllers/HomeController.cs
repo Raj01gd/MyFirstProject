@@ -10,6 +10,17 @@ namespace MyFirstProject.Controllers
     {
         public ActionResult Index()
         {
+            if (User.IsInRole("Admin"))
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Contact");
+            }
+        }
+        public ActionResult Contact()
+        {
             return View();
         }
     }
