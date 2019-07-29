@@ -19,7 +19,7 @@ namespace MyFirstProject.Common
         {
             using (MyFirstProjectDBEntities Db = new MyFirstProjectDBEntities())
             {
-                var usersRole = Db.SECURITY_DB.Any(item => item.ROLES == role && item.FULL_NAME == Identity.Name);
+                var usersRole = Db.SECURITY_DB.Any(item => item.ROLE.ROLE_NAME == role && item.FULL_NAME == Identity.Name);
                 if (usersRole)
                 {
                     return true;

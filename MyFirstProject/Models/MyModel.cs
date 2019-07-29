@@ -20,6 +20,6 @@ namespace MyFirstProject.Models
         public string ConfirmPassword { get; set; }
 
         [Required(ErrorMessage ="Enter Role")]
-        public string Role { get; set; }
+        public int Role { get; set; }
     }
 }

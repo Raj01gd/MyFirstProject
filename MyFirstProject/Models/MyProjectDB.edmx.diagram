@@ -5,8 +5,10 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="c861c9e707f04c04ad2a7473130a25e7" Name="Diagram1">
-        <EntityTypeShape EntityType="MyFirstProjectDBModel.SECURITY_DB" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
-      </Diagram>
+        <EntityTypeShape EntityType="MyFirstProjectDBModel.ROLE" Width="1.5" PointX="0.75" PointY="1" />
+        <EntityTypeShape EntityType="MyFirstProjectDBModel.SECURITY_DB" Width="1.5" PointX="3" PointY="0.875" />
+        <AssociationConnector Association="MyFirstProjectDBModel.FK_ROLES_ID" />
+        </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>

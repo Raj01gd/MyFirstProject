@@ -34,7 +34,7 @@ namespace MyFirstProject.Controllers
                     var userModel = new UserModel()
                     {
                         UserName = userInfo.FULL_NAME,
-                        Role = userInfo.ROLES
+                        Role = userInfo.ROLE.ROLE_NAME
                     };
                     JavaScriptSerializer serializer = new JavaScriptSerializer();
 
@@ -60,7 +60,7 @@ namespace MyFirstProject.Controllers
                 else
                 {
                     return RedirectToAction("Login");
-                }                
+                }
             }
         }
         [AllowAnonymous]
@@ -72,7 +72,11 @@ namespace MyFirstProject.Controllers
         [AllowAnonymous]
         public ActionResult Register()
         {
-            return View();
+            using (MyFirstProjectDBEntities Db = new MyFirstProjectDBEntities())
+            {
+                ViewBag.ExistingRoles = Db.ROLES.AsEnumerable().Select(item => new KeyValuePair<int,string>(item.ID, item.ROLE_NAME)).ToList();
+                return View();
+            }
         }
         [HttpPost]
         public ActionResult Register(MyModel user)
@@ -83,7 +87,7 @@ namespace MyFirstProject.Controllers
                 var newUser = Db.SECURITY_DB.Create();
                 newUser.FULL_NAME = user.userName;
                 newUser.SECURE_PWD = password;
-                newUser.ROLES = user.Role;
+                newUser.ROLE_ID = user.Role;
                 Db.SECURITY_DB.Add(newUser);
                 Db.SaveChanges();
                 return RedirectToAction("Login");

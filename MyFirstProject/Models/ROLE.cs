@@ -12,13 +12,19 @@ namespace MyFirstProject.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class SECURITY_DB
+    public partial class ROLE
     {
-        public int ID { get; set; }
-        public string FULL_NAME { get; set; }
-        public int ROLE_ID { get; set; }
-        public string SECURE_PWD { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public ROLE()
+        {
+            this.SECURITY_DB = new HashSet<SECURITY_DB>();
+        }
     
-        public virtual ROLE ROLE { get; set; }
+        public int ID { get; set; }
+        public string ROLE_NAME { get; set; }
+        public string ROLE_DESCRIPTION { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SECURITY_DB> SECURITY_DB { get; set; }
     }
 }

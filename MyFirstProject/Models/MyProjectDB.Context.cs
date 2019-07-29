@@ -25,6 +25,7 @@ namespace MyFirstProject.Models
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<ROLE> ROLES { get; set; }
         public virtual DbSet<SECURITY_DB> SECURITY_DB { get; set; }
     }
 }

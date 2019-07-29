@@ -5,47 +5,108 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="MyFirstProjectDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="ROLES">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ROLE_NAME" Type="varchar" MaxLength="200" />
+          <Property Name="ROLE_DESCRIPTION" Type="varchar" MaxLength="500" />
+        </EntityType>
         <EntityType Name="SECURITY_DB">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="FULL_NAME" Type="varchar" MaxLength="100" />
-          <Property Name="ROLES" Type="varchar" MaxLength="50" />
+          <Property Name="ROLE_ID" Type="int" Nullable="false" />
           <Property Name="SECURE_PWD" Type="varchar" MaxLength="400" />
         </EntityType>
+        <Association Name="FK_ROLES_ID">
+          <End Role="ROLES" Type="Self.ROLES" Multiplicity="1" />
+          <End Role="SECURITY_DB" Type="Self.SECURITY_DB" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ROLES">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="SECURITY_DB">
+              <PropertyRef Name="ROLE_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="MyFirstProjectDBModelStoreContainer">
+          <EntitySet Name="ROLES" EntityType="Self.ROLES" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SECURITY_DB" EntityType="Self.SECURITY_DB" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_ROLES_ID" Association="Self.FK_ROLES_ID">
+            <End Role="ROLES" EntitySet="ROLES" />
+            <End Role="SECURITY_DB" EntitySet="SECURITY_DB" />
+          </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="MyFirstProjectDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="MyFirstProjectDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="ROLES" EntityType="MyFirstProjectDBModel.ROLE" />
+          <EntitySet Name="SECURITY_DB" EntityType="MyFirstProjectDBModel.SECURITY_DB" />
+          <AssociationSet Name="FK_ROLES_ID" Association="MyFirstProjectDBModel.FK_ROLES_ID">
+            <End Role="ROLE" EntitySet="ROLES" />
+            <End Role="SECURITY_DB" EntitySet="SECURITY_DB" />
+          </AssociationSet>
+          </EntityContainer>
+        <EntityType Name="ROLE">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ROLE_NAME" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="ROLE_DESCRIPTION" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="SECURITY_DB" Relationship="MyFirstProjectDBModel.FK_ROLES_ID" FromRole="ROLE" ToRole="SECURITY_DB" />
+          </EntityType>
         <EntityType Name="SECURITY_DB">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="FULL_NAME" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="ROLES" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ROLE_ID" Type="Int32" Nullable="false" />
           <Property Name="SECURE_PWD" Type="String" MaxLength="400" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="ROLE" Relationship="MyFirstProjectDBModel.FK_ROLES_ID" FromRole="SECURITY_DB" ToRole="ROLE" />
         </EntityType>
-        <EntityContainer Name="MyFirstProjectDBEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="SECURITY_DB" EntityType="Self.SECURITY_DB" />
-        </EntityContainer>
-      </Schema>
+        <Association Name="FK_ROLES_ID">
+          <End Type="MyFirstProjectDBModel.ROLE" Role="ROLE" Multiplicity="1" />
+          <End Type="MyFirstProjectDBModel.SECURITY_DB" Role="SECURITY_DB" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ROLE">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="SECURITY_DB">
+              <PropertyRef Name="ROLE_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="MyFirstProjectDBModelStoreContainer" CdmEntityContainer="MyFirstProjectDBEntities">
+          <EntitySetMapping Name="ROLES">
+            <EntityTypeMapping TypeName="MyFirstProjectDBModel.ROLE">
+              <MappingFragment StoreEntitySet="ROLES">
+                <ScalarProperty Name="ROLE_DESCRIPTION" ColumnName="ROLE_DESCRIPTION" />
+                <ScalarProperty Name="ROLE_NAME" ColumnName="ROLE_NAME" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="SECURITY_DB">
             <EntityTypeMapping TypeName="MyFirstProjectDBModel.SECURITY_DB">
               <MappingFragment StoreEntitySet="SECURITY_DB">
                 <ScalarProperty Name="SECURE_PWD" ColumnName="SECURE_PWD" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="ROLE_ID" ColumnName="ROLE_ID" />
                 <ScalarProperty Name="FULL_NAME" ColumnName="FULL_NAME" />
-                <ScalarProperty Name="ROLES" ColumnName="ROLES" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
