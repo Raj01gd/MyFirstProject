@@ -72,11 +72,7 @@ namespace MyFirstProject.Controllers
         [AllowAnonymous]
         public ActionResult Register()
         {
-            using (MyFirstProjectDBEntities Db = new MyFirstProjectDBEntities())
-            {
-                ViewBag.ExistingRoles = Db.ROLES.AsEnumerable().Select(item => new KeyValuePair<int,string>(item.ID, item.ROLE_NAME)).ToList();
-                return View();
-            }
+            return View();
         }
         [HttpPost]
         public ActionResult Register(MyModel user)
@@ -87,7 +83,7 @@ namespace MyFirstProject.Controllers
                 var newUser = Db.SECURITY_DB.Create();
                 newUser.FULL_NAME = user.userName;
                 newUser.SECURE_PWD = password;
-                newUser.ROLE_ID = user.Role;
+                newUser.ROLE_ID = 3;
                 Db.SECURITY_DB.Add(newUser);
                 Db.SaveChanges();
                 return RedirectToAction("Login");
