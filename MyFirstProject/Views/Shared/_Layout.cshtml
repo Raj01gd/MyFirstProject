@@ -13,18 +13,24 @@
         <a href="#">About</a>
         <a href="#">Services</a>
         <a href="#">Clients</a>
-        <a href="~/Home/Contact">Contact</a>
+        <a href="~/Home/Contact">Contact Us</a>
     </div>
     <div class="navbar navbar-default navbar">
         <div class="container">
             <div class="row">
                 <div class="navbar-header col-md-12">
-                    <a class="navbar-btn btn btn-default pull-left mar-right-5 nav-side" onclick="openNav()" id="sideNav">&#9776; Menu</a>
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <a class="navbar-btn btn btn-default pull-left mar-right-5 nav-side" onclick="openNav()" id="sideNav">&#9776; Menu</a>
+                    }
                     @Html.ActionLink("  My First Project", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
                     @if (User.Identity.IsAuthenticated)
                     {
-                        <label class="navbar-text">Hello @base.User.Identity.Name!</label>
+                        
                         <ul class="nav navbar-nav pull-right">
+                            <li>
+                                <label class="navbar-text">Hello @base.User.Identity.Name!</label>
+                            </li>
                             <li>
                                 <a href='@Url.Action("Logout","Account")'><span class="glyphicon glyphicon-log-out"></span> Logout</a>
                             </li>

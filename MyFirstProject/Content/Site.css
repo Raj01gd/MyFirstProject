@@ -9,6 +9,19 @@
     padding-right: 15px;
 }
 
+.column {
+    float: left;
+    width: 32%;
+    padding: 0 10px;
+}
+
+.card {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    padding: 16px;
+    text-align: center;
+    background-color: #98b1b9;
+}
+
 .plus-icon:after {
     content: "\f067";
     font-family: 'FontAwesome';
@@ -32,6 +45,11 @@
 .sidebar{
     font-stretch:ultra-condensed;
 }
+
+.mar-bottom-10{
+    margin-bottom:10px;
+}
+
 .sidenav {
     height: 100%;
     width: 0;
