@@ -10,7 +10,7 @@ namespace MyFirstProject.Models
     {
         [Required(ErrorMessage ="Enter User Name")]
         public string userName { get; set; }
-        [Required(ErrorMessage = "Password is required")]
+        [Required(ErrorMessage = "Password is required"),MinLength(9)]
         [DataType(DataType.Password, ErrorMessage = "Invalid Password")]
         public string Password { get; set; }
 

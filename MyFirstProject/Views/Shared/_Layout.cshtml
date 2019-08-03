@@ -8,24 +8,30 @@
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
+    <div id="mySidenav" class="sidenav nav-side">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <a href="#">About</a>
+        <a href="#">Services</a>
+        <a href="#">Clients</a>
+        <a href="#">Contact</a>
+    </div>
+    <div class="navbar navbar-default navbar">
         <div class="container">
             <div class="row">
-                <div class="navbar-header col-md-10">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    @Html.ActionLink("My First Project", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-                </div>
-                <div class="navbar-collapse collapse col-md-2">
+                <div class="navbar-header col-md-12">
+                    @*<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".collapse">
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>*@
+                    <a class="navbar-btn btn btn-default pull-left mar-right-5 nav-side" onclick="openNav()" id="sideNav">&#9776; Menu</a>
+                    @Html.ActionLink("  My First Project", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                    @*</div>
+                        <div class="navbar-collapse col-md-2 collapse pull-right">*@
                     @if (User.Identity.IsAuthenticated)
                     {
+                        <label class="navbar-text">Hello @base.User.Identity.Name!</label>
                         <ul class="nav navbar-nav pull-right">
-                            <li>
-                                <a href="#">Hello @base.User.Identity.Name!</a>
-                            </li>
                             <li>
                                 <a href='@Url.Action("Logout","Account")'><span class="glyphicon glyphicon-log-out"></span> Logout</a>
                             </li>
@@ -35,18 +41,33 @@
             </div>
         </div>
     </div>
+
     <div class="container body-content">
         @RenderBody()
-        <hr />
-        <footer class="text-center">
-            <p style="position:center">&copy; @DateTime.Now.Year - My First Project</p>
-        </footer>
     </div>
-
-
+    <footer class="text-center panel-footer">
+        <p style="position:center">&copy; @DateTime.Now.Year - My First Project</p>
+    </footer>
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/jqueryval")
     @RenderSection("scripts", required: false)
+    <script>
+        function openNav() {
+            document.getElementById("mySidenav").style.width = "250px";
+        }
+        function closeNav() {
+            document.getElementById("mySidenav").style.width = "0";
+    }
+    $(document).ready(function () {
+            $(document).click(function (event) {
+                var clickover = $(event.target);
+                var _opened = $(".sidenav").hasClass("nav-side");
+                if (_opened === true && !clickover.hasClass("nav-side")) {
+                    document.getElementById("mySidenav").style.width = "0";
+                }
+            });
+        });
+/**/</script>
 </body>
 </html>
